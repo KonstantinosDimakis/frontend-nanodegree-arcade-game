@@ -1,0 +1,31 @@
+{
+  "name": "frontend-nanodegree-arcade-game",
+  "version": "1.0.0",
+  "description": "Frogger arcade game clone",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KonstantinosDimakis/frontend-nanodegree-arcade-game.git"
+  },
+  "keywords": [
+    "frontend",
+    "nanodegree",
+    "frogger",
+    "arcade",
+    "game",
+    "javascript"
+  ],
+  "author": "Konstantinos Dimakis",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KonstantinosDimakis/frontend-nanodegree-arcade-game/issues"
+  },
+  "homepage": "https://github.com/KonstantinosDimakis/frontend-nanodegree-arcade-game#readme",
+  "devDependencies": {
+    "eslint": "^3.12.2",
+    "eslint-config-google": "^0.7.1"
+  }
+}

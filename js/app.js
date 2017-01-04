@@ -25,6 +25,33 @@ Enemy.prototype.render = function() {
 // This class requires an update(), render() and
 // a handleInput() method.
 
+var Player = function () {
+
+    // The image/sprite for our enemies, this uses
+    // a helper we've provided to easily load images
+    this.sprite = 'images/char-boy.png'
+};
+
+Player.prototype.update = function (dt) {
+    // You should multiply any movement by the dt parameter
+    // which will ensure the game runs at the same speed for
+    // all computers.
+};
+
+/**
+ * Draw the player on screen
+ */
+Player.prototype.render = function () {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+/**
+ * Handle input
+ * @param {string} key
+ */
+Player.prototype.handleInput = function (key) {
+    // Handle Input
+};
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies

@@ -26,7 +26,8 @@ Enemy.prototype.render = function() {
 // a handleInput() method.
 
 var Player = function () {
-
+    this.x = 202;
+    this.y = 83 * 5 - 32; // TODO Make variables represent rows etc
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/char-boy.png'
@@ -50,14 +51,14 @@ Player.prototype.render = function () {
  * @param {string} key
  */
 Player.prototype.handleInput = function (key) {
-    // Handle Input
+    //
 };
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
-
-
+var allEnemies = [new Enemy()];
+var player = new Player();
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.

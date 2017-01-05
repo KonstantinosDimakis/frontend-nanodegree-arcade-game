@@ -1,7 +1,31 @@
+/**
+ * Grid for the game board. Use this to easily position
+ * characters and game components.
+ *
+ * Example: this.x = grid.column(5);
+ */
+var grid = {
+    _BLOCK_WIDTH : 101,
+    _BLOCK_HEIGHT : 83,
+    _OFFSET : 25
+};
+
+// TODO Comment
+grid.column = function (column) {
+    return column * this._BLOCK_WIDTH;
+};
+
+// TODO Comment
+grid.row = function (row) {
+    return row * this._BLOCK_HEIGHT - this._OFFSET;
+};
+
 // Enemies our player must avoid
 var Enemy = function() {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
+    this.x = grid.column(-1);
+    this.y = grid.row(1);
 
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
@@ -11,6 +35,7 @@ var Enemy = function() {
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
+    this.x += dt * 40;
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
@@ -26,8 +51,8 @@ Enemy.prototype.render = function() {
 // a handleInput() method.
 
 var Player = function () {
-    this.x = 202;
-    this.y = 83 * 5 - 32; // TODO Make variables represent rows etc
+    this.x = grid.column(2);
+    this.y = grid.row(5);
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/char-boy.png'

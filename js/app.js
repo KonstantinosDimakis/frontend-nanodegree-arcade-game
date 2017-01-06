@@ -2,35 +2,44 @@
  * Grid for the game board. Use this to easily position
  * characters and game components.
  *
- * Example: this.x = grid.column(5);
- * Example: this.x = grid.row(5);
+ * Examples: this.x = grid.column(5);
+ *           this.y = grid.row(5);
  */
 var grid = {
-    _BLOCK_WIDTH : 101,
-    _BLOCK_HEIGHT : 83,
-    _OFFSET : 25
+    /**
+     * {number} pixels
+     */
+    COLUMN : 101,
+    /**
+     * {number} pixels
+     */
+    ROW    : 83,
+    /**
+     * {number} pixels
+     */
+    _OFFSET: 25,
 };
 
 /**
- * Returns the proper pixel number for a given column
+ * Return the proper pixel number for a given column
  * @param {number} column
- * @returns {number} pixels
+ * @return {number} pixels
  */
 grid.column = function (column) {
-    return column * this._BLOCK_WIDTH;
+    return column * this.COLUMN;
 };
 
 /**
- * Returns the proper pixel number for a given row
+ * Return the proper pixel number for a given row
  * @param {number} row
- * @returns {number} pixels
+ * @return {number} pixels
  */
 grid.row = function (row) {
-    return row * this._BLOCK_HEIGHT - this._OFFSET;
+    return row * this.ROW - this._OFFSET;
 };
 
 // Enemies our player must avoid
-var Enemy = function() {
+var Enemy = function () {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
     this.x = grid.column(-1);
@@ -43,7 +52,7 @@ var Enemy = function() {
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
-Enemy.prototype.update = function(dt) {
+Enemy.prototype.update = function (dt) {
     this.x += dt * 40;
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
@@ -51,7 +60,7 @@ Enemy.prototype.update = function(dt) {
 };
 
 // Draw the enemy on the screen, required method for game
-Enemy.prototype.render = function() {
+Enemy.prototype.render = function () {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
@@ -62,15 +71,13 @@ Enemy.prototype.render = function() {
 var Player = function () {
     this.x = grid.column(2);
     this.y = grid.row(5);
+    this.intent = null;
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
-    this.sprite = 'images/char-boy.png'
+    this.sprite = 'images/char-boy.png';
 };
 
-Player.prototype.update = function (dt) {
-    // You should multiply any movement by the dt parameter
-    // which will ensure the game runs at the same speed for
-    // all computers.
+Player.prototype.update = function () {
 };
 
 /**
@@ -85,7 +92,8 @@ Player.prototype.render = function () {
  * @param {string} key
  */
 Player.prototype.handleInput = function (key) {
-    //
+    // TODO Restrict disallowed movements
+    this.intent = key;
 };
 
 // Now instantiate your objects.
@@ -96,12 +104,12 @@ var player = new Player();
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
-document.addEventListener('keyup', function(e) {
+document.addEventListener('keyup', function (e) {
     var allowedKeys = {
         37: 'left',
         38: 'up',
         39: 'right',
-        40: 'down'
+        40: 'down',
     };
 
     player.handleInput(allowedKeys[e.keyCode]);

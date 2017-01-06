@@ -85,7 +85,14 @@ Player.prototype.update = function () {
             this.x -= grid.COLUMN;
             break;
         case 'up':
-            this.y -= grid.ROW;
+            // If player is going to step into the water
+            // reset him to the initial position
+            if (grid.row(1) === this.y) {
+                this.x = grid.column(2);
+                this.y = grid.row(5);
+            } else {
+                this.y -= grid.ROW;
+            }
             break;
         case 'right':
             this.x += grid.COLUMN;
@@ -106,12 +113,39 @@ Player.prototype.render = function () {
 };
 
 /**
- * Handle input
+ * Handle input & restrict disallowed movements
  * @param {string} key
  */
 Player.prototype.handleInput = function (key) {
-    // TODO Restrict disallowed movements
-    this.intent = key;
+    if (this._isAllowed(key))
+        this.intent = key;
+};
+
+/**
+ * Check if intent is allowed
+ * @param {string} intent
+ * @return {boolean}
+ * @private
+ */
+Player.prototype._isAllowed = function (intent) {
+    switch (intent) {
+        case 'left':
+            // if player is in the left edge
+            if (grid.column(0) === this.x)
+                return false;
+            break;
+        case 'right':
+            // if player is in the right edge
+            if (grid.column(4) === this.x)
+                return false;
+            break;
+        case 'down':
+            // if player is in the bottom edge
+            if (grid.row(5) === this.y)
+                return false;
+            break;
+    }
+    return true;
 };
 
 // Now instantiate your objects.

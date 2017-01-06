@@ -76,8 +76,26 @@ var Player = function () {
     // a helper we've provided to easily load images
     this.sprite = 'images/char-boy.png';
 };
-
+/**
+ * Update player's position, required method for game
+ */
 Player.prototype.update = function () {
+    switch (this.intent) {
+        case 'left':
+            this.x -= grid.COLUMN;
+            break;
+        case 'up':
+            this.y -= grid.ROW;
+            break;
+        case 'right':
+            this.x += grid.COLUMN;
+            break;
+        case 'down':
+            this.y += grid.ROW;
+            break;
+    }
+    // intent was fulfilled
+    this.intent = null;
 };
 
 /**

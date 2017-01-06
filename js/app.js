@@ -38,26 +38,9 @@ grid.row = function (row) {
     return row * this.ROW - this._OFFSET;
 };
 
-// Enemies our player must avoid
+// Enemies our player must avoid TODO Comment
 var Enemy = function() {
-    /**
-     * Min and Max speed of enemies
-     * @type {{min: number, max: number}}
-     */
-    var SPEED = {
-        min: 20,
-        max: 500,
-    };
-
-
-    // Initiate enemy off screen
-    this.x = grid.column(-1);
-    // Randomly place him on one of the 3 rows
-    this.y = grid.row(
-        Math.floor(Math.random() * (3 - 1 + 1)) + 1
-    );
-    // Assign a random SPEED
-    this.speed = Math.floor(Math.random() * (SPEED.max - SPEED.min + 1)) + SPEED.min;
+    this._initialize();
 
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
@@ -66,8 +49,13 @@ var Enemy = function() {
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
-Enemy.prototype.update = function (dt) {
+Enemy.prototype.update = function(dt) {
+    if (this.x >= grid.column(5)) {// TODO Comment
+        this._initialize();
+    }
     this.x += dt * this.speed;
+
+
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
@@ -76,6 +64,26 @@ Enemy.prototype.update = function (dt) {
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function () {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+// TODO Comment
+Enemy.prototype._initialize = function () {
+    /**
+     * Min and Max speed of enemies
+     * @type {{min: number, max: number}}
+     */
+    var SPEED = {
+        min: 50,
+        max: 400,
+    };
+    // Initiate enemy off screen
+    this.x = grid.column(-1);
+    // Randomly place him on one of the 3 rows
+    this.y = grid.row(
+        Math.floor(Math.random() * (3 - 1 + 1)) + 1
+    );
+    // Assign a random SPEED
+    this.speed = Math.floor(Math.random() * (SPEED.max - SPEED.min + 1)) + SPEED.min;
 };
 
 /**

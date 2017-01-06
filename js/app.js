@@ -3,6 +3,7 @@
  * characters and game components.
  *
  * Example: this.x = grid.column(5);
+ * Example: this.x = grid.row(5);
  */
 var grid = {
     _BLOCK_WIDTH : 101,
@@ -10,12 +11,20 @@ var grid = {
     _OFFSET : 25
 };
 
-// TODO Comment
+/**
+ * Returns the proper pixel number for a given column
+ * @param {number} column
+ * @returns {number} pixels
+ */
 grid.column = function (column) {
     return column * this._BLOCK_WIDTH;
 };
 
-// TODO Comment
+/**
+ * Returns the proper pixel number for a given row
+ * @param {number} row
+ * @returns {number} pixels
+ */
 grid.row = function (row) {
     return row * this._BLOCK_HEIGHT - this._OFFSET;
 };

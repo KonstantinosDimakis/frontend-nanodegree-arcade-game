@@ -39,11 +39,15 @@ grid.row = function (row) {
 };
 
 // Enemies our player must avoid
-var Enemy = function () {
-    // Variables applied to each of our instances go here,
-    // we've provided one for you to get started
+var Enemy = function() {
+    // Initiate enemy off screen
     this.x = grid.column(-1);
-    this.y = grid.row(1);
+    // Randomly place him on one of the 3 rows
+    this.y = grid.row(
+        Math.floor(Math.random() * (3 - 1 + 1)) + 1
+    );
+    // Assign a random speed
+    this.speed = Math.floor(Math.random() * (500 - 20 + 1)) + 20;
 
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
@@ -53,7 +57,7 @@ var Enemy = function () {
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function (dt) {
-    this.x += dt * 40;
+    this.x += dt * this.speed;
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
@@ -64,10 +68,10 @@ Enemy.prototype.render = function () {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-// Now write your own player class
-// This class requires an update(), render() and
-// a handleInput() method.
-
+/**
+ * Player
+ * @constructor
+ */
 var Player = function () {
     this.x = grid.column(2);
     this.y = grid.row(5);
@@ -76,8 +80,10 @@ var Player = function () {
     // a helper we've provided to easily load images
     this.sprite = 'images/char-boy.png';
 };
+
 /**
- * Update player's position, required method for game
+ * Update player's position based on his intent,
+ * required method for game
  */
 Player.prototype.update = function () {
     switch (this.intent) {

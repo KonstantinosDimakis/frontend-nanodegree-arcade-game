@@ -40,14 +40,24 @@ grid.row = function (row) {
 
 // Enemies our player must avoid
 var Enemy = function() {
+    /**
+     * Min and Max speed of enemies
+     * @type {{min: number, max: number}}
+     */
+    var SPEED = {
+        min: 20,
+        max: 500,
+    };
+
+
     // Initiate enemy off screen
     this.x = grid.column(-1);
     // Randomly place him on one of the 3 rows
     this.y = grid.row(
         Math.floor(Math.random() * (3 - 1 + 1)) + 1
     );
-    // Assign a random speed
-    this.speed = Math.floor(Math.random() * (500 - 20 + 1)) + 20;
+    // Assign a random SPEED
+    this.speed = Math.floor(Math.random() * (SPEED.max - SPEED.min + 1)) + SPEED.min;
 
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images

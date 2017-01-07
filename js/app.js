@@ -38,7 +38,10 @@ grid.row = function (row) {
     return row * this.ROW - this._OFFSET;
 };
 
-// Enemies our player must avoid TODO Comment
+/**
+ * Enemies our players must avoid
+ * @constructor
+ */
 var Enemy = function() {
     this._initialize();
 
@@ -50,7 +53,8 @@ var Enemy = function() {
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
-    if (this.x >= grid.column(5)) {// TODO Comment
+    // if enemy has completely crossed the canvas
+    if (this.x >= grid.column(5)) {
         this._initialize();
     }
     this.x += dt * this.speed;
@@ -66,7 +70,11 @@ Enemy.prototype.render = function () {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-// TODO Comment
+/**
+ * Initialize enemy off canvas in one of 3 rows randomly
+ * and give him a speed.
+ * @private
+ */
 Enemy.prototype._initialize = function () {
     /**
      * Min and Max speed of enemies
@@ -76,7 +84,7 @@ Enemy.prototype._initialize = function () {
         min: 50,
         max: 400,
     };
-    // Initiate enemy off screen
+    // Initialize enemy off screen
     this.x = grid.column(-1);
     // Randomly place him on one of the 3 rows
     this.y = grid.row(

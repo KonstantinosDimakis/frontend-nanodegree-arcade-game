@@ -38,6 +38,15 @@ GRID.row = function (row) {
     return row * this.ROW - this._OFFSET;
 };
 
+//TODO
+GRID.getPosition = function (x, xLength, y, yLength) {
+
+};
+//TODO
+GRID.setPosition = function (column, row) {
+
+};
+
 /**
  * Enemies our players must avoid
  * @constructor
@@ -98,12 +107,19 @@ Enemy.prototype._initialize = function () {
  * @constructor
  */
 var Player = function () {
-    this.x = GRID.column(2);
-    this.y = GRID.row(5);
-    this.intent = null;
+    this.initialize();
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/char-boy.png';
+};
+
+/**
+ * Initialize player's position & intent
+ */
+Player.prototype.initialize = function () {
+    this.x = GRID.column(2);
+    this.y = GRID.row(5);
+    this.intent = 'stay';
 };
 
 /**
@@ -133,7 +149,7 @@ Player.prototype.update = function () {
             break;
     }
     // intent was fulfilled
-    this.intent = null;
+    this.intent = 'stay';
 };
 
 /**
@@ -156,6 +172,9 @@ Player.prototype.handleInput = function (key) {
  * Get grid position
  * @return {{column: number, row: number}}
  *///TODO Refactor in GRID object to getPosition setPosition
+// TODO In general refactor the code and make it so minimal
+// amount of change is required if I want to add items, characters
+// and change the width and height of the board
 Player.prototype.gridPosition = function () {
     return {
         column: this.x / GRID.COLUMN,

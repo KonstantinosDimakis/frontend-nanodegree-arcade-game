@@ -80,11 +80,7 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
-        // checkCollisions(); TODO
-    // Must check if 100 pixels of enemy collide with
-    //    the 2nd 1/3 of the player
-    //    20 - 25 pixels dld otan to bug einai 75 me 80%
-    //    mesa se ene tetragwno.
+        checkCollisions();
     }
 
     /* This is called by the update function and loops through all of the
@@ -99,6 +95,20 @@ var Engine = (function(global) {
             enemy.update(dt);
         });
         player.update();
+    }
+
+    /**
+     * Check collisions based on 2 criteria
+     * 1. Enemy and player are in the same row
+     * 2. Enemy sprite collides with player on the torso
+     */
+    function checkCollisions() {
+        allEnemies.forEach(function (enemy) {
+            // Starts hitting enemy torso           is on the same row    hitting enemy torso with the back
+            if ((enemy.x + 101 >= player.x + 33) && (player.y === enemy.y) && (enemy.x <= player.x + 60)) {
+                player.initialize();
+            }
+        });
     }
 
     /* This function initially draws the "game level", it will then call

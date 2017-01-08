@@ -155,7 +155,7 @@ Player.prototype.handleInput = function (key) {
 /**
  * Get grid position
  * @return {{column: number, row: number}}
- */
+ *///TODO Refactor in GRID object to getPosition setPosition
 Player.prototype.gridPosition = function () {
     return {
         column: this.x / GRID.COLUMN,

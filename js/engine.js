@@ -81,6 +81,10 @@ var Engine = (function(global) {
     function update(dt) {
         updateEntities(dt);
         // checkCollisions(); TODO
+    // Must check if 100 pixels of enemy collide with
+    //    the 2nd 1/3 of the player
+    //    20 - 25 pixels dld otan to bug einai 75 me 80%
+    //    mesa se ene tetragwno.
     }
 
     /* This is called by the update function and loops through all of the
@@ -121,7 +125,7 @@ var Engine = (function(global) {
 
         /* Loop through the number of rows and columns we've defined above
          * and, using the rowImages array, draw the correct image for that
-         * portion of the "grid"
+         * portion of the "GRID"
          */
         for (row = 0; row < numRows; row++) {
             for (col = 0; col < numCols; col++) {

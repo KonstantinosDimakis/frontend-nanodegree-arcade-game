@@ -5,7 +5,7 @@
  * Examples: this.x = grid.column(5);
  *           this.y = grid.row(5);
  */
-var grid = {
+var GRID = {
     /**
      * {number} pixels
      */
@@ -25,7 +25,7 @@ var grid = {
  * @param {number} column
  * @return {number} pixels
  */
-grid.column = function (column) {
+GRID.column = function (column) {
     return column * this.COLUMN;
 };
 
@@ -34,7 +34,7 @@ grid.column = function (column) {
  * @param {number} row
  * @return {number} pixels
  */
-grid.row = function (row) {
+GRID.row = function (row) {
     return row * this.ROW - this._OFFSET;
 };
 
@@ -54,11 +54,10 @@ var Enemy = function() {
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
     // if enemy has completely crossed the canvas
-    if (this.x >= grid.column(5)) {
+    if (this.x >= GRID.column(5)) {
         this._initialize();
     }
     this.x += dt * this.speed;
-
 
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
@@ -85,9 +84,9 @@ Enemy.prototype._initialize = function () {
         max: 400,
     };
     // Initialize enemy off screen
-    this.x = grid.column(-1);
+    this.x = GRID.column(-1);
     // Randomly place him on one of the 3 rows
-    this.y = grid.row(
+    this.y = GRID.row(
         Math.floor(Math.random() * (3 - 1 + 1)) + 1
     );
     // Assign a random SPEED
@@ -99,8 +98,8 @@ Enemy.prototype._initialize = function () {
  * @constructor
  */
 var Player = function () {
-    this.x = grid.column(2);
-    this.y = grid.row(5);
+    this.x = GRID.column(2);
+    this.y = GRID.row(5);
     this.intent = null;
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
@@ -114,23 +113,23 @@ var Player = function () {
 Player.prototype.update = function () {
     switch (this.intent) {
         case 'left':
-            this.x -= grid.COLUMN;
+            this.x -= GRID.COLUMN;
             break;
         case 'up':
             // If player is going to step into the water
             // reset him to the initial position
-            if (grid.row(1) === this.y) {
-                this.x = grid.column(2);
-                this.y = grid.row(5);
+            if (GRID.row(1) === this.y) {
+                this.x = GRID.column(2);
+                this.y = GRID.row(5);
             } else {
-                this.y -= grid.ROW;
+                this.y -= GRID.ROW;
             }
             break;
         case 'right':
-            this.x += grid.COLUMN;
+            this.x += GRID.COLUMN;
             break;
         case 'down':
-            this.y += grid.ROW;
+            this.y += GRID.ROW;
             break;
     }
     // intent was fulfilled
@@ -154,6 +153,17 @@ Player.prototype.handleInput = function (key) {
 };
 
 /**
+ * Get grid position
+ * @return {{column: number, row: number}}
+ */
+Player.prototype.gridPosition = function () {
+    return {
+        column: this.x / GRID.COLUMN,
+        row : (this.y + GRID._OFFSET) / GRID.ROW,
+    };
+};
+
+/**
  * Check if intent is allowed
  * @param {string} intent
  * @return {boolean}
@@ -163,17 +173,17 @@ Player.prototype._isAllowed = function (intent) {
     switch (intent) {
         case 'left':
             // if player is in the left edge
-            if (grid.column(0) === this.x)
+            if (GRID.column(0) === this.x)
                 return false;
             break;
         case 'right':
             // if player is in the right edge
-            if (grid.column(4) === this.x)
+            if (GRID.column(4) === this.x)
                 return false;
             break;
         case 'down':
             // if player is in the bottom edge
-            if (grid.row(5) === this.y)
+            if (GRID.row(5) === this.y)
                 return false;
             break;
     }

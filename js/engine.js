@@ -80,7 +80,7 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
-        // checkCollisions();
+        checkCollisions();
     }
 
     /* This is called by the update function and loops through all of the
@@ -95,6 +95,23 @@ var Engine = (function(global) {
             enemy.update(dt);
         });
         player.update();
+    }
+
+    /**
+     * Check collisions
+     */
+    function checkCollisions() {
+        /**
+         * Check Enemy collision based on 2 criteria
+         * 1. Enemy and player are in the same row
+         * 2. Enemy sprite collides with player on the torso
+         */
+        allEnemies.forEach(function (enemy) {
+            // Starts hitting enemy torso           is on the same row    hitting enemy torso with the back
+            if ((enemy.x + 101 >= player.x + 33) && (player.y === enemy.y) && (enemy.x <= player.x + 60)) {
+                player.initialize();
+            }
+        });
     }
 
     /* This function initially draws the "game level", it will then call
@@ -121,7 +138,7 @@ var Engine = (function(global) {
 
         /* Loop through the number of rows and columns we've defined above
          * and, using the rowImages array, draw the correct image for that
-         * portion of the "grid"
+         * portion of the "GRID"
          */
         for (row = 0; row < numRows; row++) {
             for (col = 0; col < numCols; col++) {
@@ -158,7 +175,7 @@ var Engine = (function(global) {
      * handle game reset states - maybe a new game menu or a game over screen
      * those sorts of things. It's only called once by the init() method.
      */
-    function reset() {
+    function reset() { // TODO
         // noop
     }
 

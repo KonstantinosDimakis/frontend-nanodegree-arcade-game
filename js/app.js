@@ -99,6 +99,18 @@ Enemy.prototype._initialize = function () {
     this.speed = Math.floor(Math.random() * (Enemy.SPEED.max - Enemy.SPEED.min + 1)) + Enemy.SPEED.min;
 };
 
+var Item = function(x, y) {
+    this.x = x;
+    this.y = y;
+
+    this.sprite;
+};
+
+Item.prototype.update = function() {};
+Item.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
 /**
  * Player
  * @constructor
@@ -108,6 +120,13 @@ var Player = function () {
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/char-boy.png';
+};
+
+/**
+ * Proclaim player as winner
+ */
+Player.prototype.win = function () {
+    this.initialize();
 };
 
 /**
@@ -133,7 +152,7 @@ Player.prototype.update = function () {
             // If player is going to step into the water
             // player wins & is reinitialized
             if (GRID.row(1) === this.y) {
-                this.initialize();
+                this.win();
             } else {
                 // else move player up
                 this.y -= GRID.ROW;
@@ -166,6 +185,10 @@ Player.prototype.render = function () {
 Player.prototype.handleInput = function (key) {
     if (this._isAllowed(key))
         this.intent = key;
+};
+
+Player.prototype.consume = function () {
+  //TODO
 };
 
 /**

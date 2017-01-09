@@ -38,20 +38,12 @@ GRID.row = function (row) {
     return row * this.ROW - this._OFFSET;
 };
 
-//TODO
-GRID.getPosition = function (x, xLength, y, yLength) {
-
-};
-//TODO
-GRID.setPosition = function (column, row) {
-
-};
-
 /**
  * Enemies our players must avoid
  * @constructor
  */
 var Enemy = function() {
+    // initialize enemy
     this._initialize();
 
     // The image/sprite for our enemies, this uses
@@ -59,21 +51,34 @@ var Enemy = function() {
     this.sprite = 'images/enemy-bug.png';
 };
 
-// Update the enemy's position, required method for game
-// Parameter: dt, a time delta between ticks
+/**
+ * Min and Max speed of enemies
+ * @type {{min: number, max: number}}
+ */
+Enemy.SPEED = {
+    min: 50,
+    max: 400,
+};
+
+/**
+ * Update enemy position
+ * @param {number} dt
+ */
 Enemy.prototype.update = function(dt) {
     // if enemy has completely crossed the canvas
+    // initialize him again
     if (this.x >= GRID.column(5)) {
         this._initialize();
     }
-    this.x += dt * this.speed;
-
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
+    this.x += dt * this.speed;
 };
 
-// Draw the enemy on the screen, required method for game
+/**
+ * Draw the enemy on the screen, required method for game
+ */
 Enemy.prototype.render = function () {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
@@ -84,14 +89,6 @@ Enemy.prototype.render = function () {
  * @private
  */
 Enemy.prototype._initialize = function () {
-    /**
-     * Min and Max speed of enemies
-     * @type {{min: number, max: number}}
-     */
-    var SPEED = {
-        min: 50,
-        max: 400,
-    };
     // Initialize enemy off screen
     this.x = GRID.column(-1);
     // Randomly place him on one of the 3 rows
@@ -99,7 +96,7 @@ Enemy.prototype._initialize = function () {
         Math.floor(Math.random() * (3 - 1 + 1)) + 1
     );
     // Assign a random SPEED
-    this.speed = Math.floor(Math.random() * (SPEED.max - SPEED.min + 1)) + SPEED.min;
+    this.speed = Math.floor(Math.random() * (Enemy.SPEED.max - Enemy.SPEED.min + 1)) + Enemy.SPEED.min;
 };
 
 /**
@@ -129,22 +126,25 @@ Player.prototype.initialize = function () {
 Player.prototype.update = function () {
     switch (this.intent) {
         case 'left':
+            // move player left
             this.x -= GRID.COLUMN;
             break;
         case 'up':
             // If player is going to step into the water
-            // reset him to the initial position
+            // player wins & is reinitialized
             if (GRID.row(1) === this.y) {
-                this.x = GRID.column(2);
-                this.y = GRID.row(5);
+                this.initialize();
             } else {
+                // else move player up
                 this.y -= GRID.ROW;
             }
             break;
         case 'right':
+            // move player right
             this.x += GRID.COLUMN;
             break;
         case 'down':
+            // move player down
             this.y += GRID.ROW;
             break;
     }
@@ -166,20 +166,6 @@ Player.prototype.render = function () {
 Player.prototype.handleInput = function (key) {
     if (this._isAllowed(key))
         this.intent = key;
-};
-
-/**
- * Get grid position
- * @return {{column: number, row: number}}
- *///TODO Refactor in GRID object to getPosition setPosition
-// TODO In general refactor the code and make it so minimal
-// amount of change is required if I want to add items, characters
-// and change the width and height of the board
-Player.prototype.gridPosition = function () {
-    return {
-        column: this.x / GRID.COLUMN,
-        row : (this.y + GRID._OFFSET) / GRID.ROW,
-    };
 };
 
 /**

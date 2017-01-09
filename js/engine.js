@@ -98,11 +98,14 @@ var Engine = (function(global) {
     }
 
     /**
-     * Check collisions based on 2 criteria
-     * 1. Enemy and player are in the same row
-     * 2. Enemy sprite collides with player on the torso
+     * Check collisions
      */
     function checkCollisions() {
+        /**
+         * Check Enemy collision based on 2 criteria
+         * 1. Enemy and player are in the same row
+         * 2. Enemy sprite collides with player on the torso
+         */
         allEnemies.forEach(function (enemy) {
             // Starts hitting enemy torso           is on the same row    hitting enemy torso with the back
             if ((enemy.x + 101 >= player.x + 33) && (player.y === enemy.y) && (enemy.x <= player.x + 60)) {

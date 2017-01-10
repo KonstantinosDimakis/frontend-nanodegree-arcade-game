@@ -126,6 +126,7 @@ var Player = function () {
  * Proclaim player as winner
  */
 Player.prototype.win = function () {
+    alert('You won the game, congratulations!');
     this.initialize();
 };
 

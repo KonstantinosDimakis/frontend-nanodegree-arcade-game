@@ -88,7 +88,7 @@ Enemy.prototype.render = function () {
  * and give him a speed.
  * @private
  */
-Enemy.prototype._initialize = function () {
+Enemy.prototype._initialize = function() {
     // Initialize enemy off screen
     this.x = GRID.column(-1);
     // Randomly place him on one of the 3 rows
@@ -99,17 +99,43 @@ Enemy.prototype._initialize = function () {
     this.speed = Math.floor(Math.random() * (Enemy.SPEED.max - Enemy.SPEED.min + 1)) + Enemy.SPEED.min;
 };
 
+/**
+ * Item is an Abstract class. It should only be extended
+ * @param {number} x Position
+ * @param {number} y Position
+ * @constructor
+ */
 var Item = function(x, y) {
+    if (this.constructor === Item) {
+        throw new Error('Can\'t instantiate abstract class!');
+    }
     this.x = x;
     this.y = y;
 
+    // Sprite should be Initialized when creating an extended class
     this.sprite;
 };
 
-Item.prototype.update = function() {};
+/**
+ * Draw Item on screen
+ */
 Item.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
+
+/**
+ * Extends Item
+ * Gem that player collects
+ * @param {number} x
+ * @param {number} y
+ * @constructor
+ */
+var Gem = function(x, y) {
+    Item.call(this, x, y);
+    this.sprite = 'images/Gem Blue.png';
+};
+Gem.prototype = Object.create(Item.prototype);
+Gem.prototype.constructor = Gem;
 
 /**
  * Player
@@ -228,6 +254,7 @@ var allEnemies = [
     new Enemy(),
 ];
 var player = new Player();
+var gem = new Gem(GRID.column(1), GRID.row(3));
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.

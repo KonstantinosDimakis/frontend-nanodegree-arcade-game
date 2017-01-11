@@ -108,7 +108,7 @@ var Engine = (function(global) {
          */
         allEnemies.forEach(function (enemy) {
             // Starts hitting enemy torso           is on the same row    hitting enemy torso with the back
-            if ((enemy.x + 101 >= player.x + 33) && (player.y === enemy.y) && (enemy.x <= player.x + 60)) {
+            if ((enemy.x + 101 >= player.x + 38) && (player.y === enemy.y) && (enemy.x <= player.x + 58)) {
                 player.initialize();
             }
         });

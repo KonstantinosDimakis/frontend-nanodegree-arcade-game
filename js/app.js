@@ -42,7 +42,7 @@ GRID.row = function (row) {
  * Enemies our players must avoid
  * @constructor
  */
-var Enemy = function() {
+var Enemy = function () {
     // initialize enemy
     this._initialize();
 
@@ -64,7 +64,7 @@ Enemy.SPEED = {
  * Update enemy position
  * @param {number} dt
  */
-Enemy.prototype.update = function(dt) {
+Enemy.prototype.update = function (dt) {
     // if enemy has completely crossed the canvas
     // initialize him again
     if (this.x >= GRID.column(5)) {
@@ -88,10 +88,10 @@ Enemy.prototype.render = function () {
  * and give him a speed.
  * @private
  */
-Enemy.prototype._initialize = function() {
+Enemy.prototype._initialize = function () {
     // Initialize enemy off screen
     this.x = GRID.column(-1);
-    // Randomly place him on one of the 3 rows
+    // Randomly place enemy on 1 of the 3 rows
     this.y = GRID.row(
         Math.floor(Math.random() * (3 - 1 + 1)) + 1
     );
@@ -105,23 +105,50 @@ Enemy.prototype._initialize = function() {
  * @param {number} y Position
  * @constructor
  */
-var Item = function(x, y) {
+var Item = function () {
+    // cannot produce objects of class Item
     if (this.constructor === Item) {
         throw new Error('Can\'t instantiate abstract class!');
     }
-    this.x = x;
-    this.y = y;
+    // position should be initialized when creating an extended class
+    this.x;
+    this.y;
+    this.visible = false;
 
-    // Sprite should be Initialized when creating an extended class
+    // sprite should be Initialized when creating an extended class
     this.sprite;
 };
 
 /**
  * Draw Item on screen
  */
-Item.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+Item.prototype.render = function () {
+    if (this.isVisible())
+        ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
+
+/**
+ * Make Item visible
+ */
+Item.prototype.show = function() {
+    this.visible = true;
+};
+
+/**
+ * Hide Item
+ */
+Item.prototype.hide = function() {
+    this.visible = false;
+};
+
+/**
+ * Check if Item is visible
+ * @returns {boolean}
+ */
+Item.prototype.isVisible = function() {
+    return this.visible;
+};
+
 
 /**
  * Extends Item
@@ -130,18 +157,40 @@ Item.prototype.render = function() {
  * @param {number} y
  * @constructor
  */
-var Gem = function(x, y) {
-    Item.call(this, x, y);
+var Gem = function() {
+    Item.call(this);
     this.sprite = 'images/Gem Blue.png';
 };
 Gem.prototype = Object.create(Item.prototype);
 Gem.prototype.constructor = Gem;
 
 /**
+ * Initialize gem randomly on enemy territory
+ */
+Gem.prototype.initialize = function() {
+    this.show();
+    // Randomly place the gem in 1 of 5 columns
+    this.x = GRID.column(
+        Math.floor(Math.random() * (4 - 0 + 1)) + 0
+    );
+    // Randomly place the gem on 1 of the 3 rows
+    this.y = GRID.row(
+        Math.floor(Math.random() * (3 - 1 + 1)) + 1
+    );
+};
+
+/**
+ * Terminate gem, by hiding it
+ */
+Gem.prototype.terminate = function() {
+    this.hide();
+};
+
+/**
  * Player
  * @constructor
  */
-var Player = function () {
+var Player = function() {
     this.initialize();
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
@@ -151,7 +200,7 @@ var Player = function () {
 /**
  * Proclaim player as winner
  */
-Player.prototype.win = function () {
+Player.prototype.win = function() {
     alert('You won the game, congratulations!');
     this.initialize();
 };
@@ -215,7 +264,7 @@ Player.prototype.handleInput = function (key) {
 };
 
 Player.prototype.consume = function () {
-  //TODO
+    //TODO
 };
 
 /**
@@ -254,7 +303,7 @@ var allEnemies = [
     new Enemy(),
 ];
 var player = new Player();
-var gem = new Gem(GRID.column(1), GRID.row(3));
+var gem = new Gem();
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.

@@ -1,3 +1,17 @@
+html {
+    box-sizing: border-box;
+}
+
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
 body {
     text-align: center;
 }
+
+.flexbox {
+    display: flex;
+    flex-wrap: wrap;
+}
+

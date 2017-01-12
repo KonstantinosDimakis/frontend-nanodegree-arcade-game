@@ -183,6 +183,7 @@ var Gem = function() {
     Item.call(this);
     this.intent = 'shown'; // Gem is intended to be shown on game board
     this.sprite = 'images/Gem Blue.png';
+    this.value = 50; // value to be used for score
 };
 Gem.prototype = Object.create(Item.prototype);
 Gem.prototype.constructor = Gem;
@@ -244,7 +245,8 @@ var Player = function() {
  * Proclaim player as winner
  */
 Player.prototype.win = function() {
-    alert('You won the game, congratulations!');
+    alert('You won the game, congratulations!\nYour score was: ' + scoreBoard.score);
+    scoreBoard.score = 0; // reset score
     this.initialize();
 };
 

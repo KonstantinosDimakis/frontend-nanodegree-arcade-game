@@ -42,7 +42,7 @@ GRID.row = function (row) {
  * Enemies our players must avoid
  * @constructor
  */
-var Enemy = function() {
+var Enemy = function () {
     // initialize enemy
     this._initialize();
 
@@ -79,7 +79,7 @@ Enemy.prototype.update = function(dt) {
 /**
  * Draw the enemy on the screen, required method for game
  */
-Enemy.prototype.render = function () {
+Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
@@ -88,10 +88,10 @@ Enemy.prototype.render = function () {
  * and give him a speed.
  * @private
  */
-Enemy.prototype._initialize = function () {
+Enemy.prototype._initialize = function() {
     // Initialize enemy off screen
     this.x = GRID.column(-1);
-    // Randomly place him on one of the 3 rows
+    // Randomly place enemy on 1 of the 3 rows
     this.y = GRID.row(
         Math.floor(Math.random() * (3 - 1 + 1)) + 1
     );
@@ -100,10 +100,118 @@ Enemy.prototype._initialize = function () {
 };
 
 /**
+ * Item is an Abstract class. It should only be extended
+ * @param {number} x Position
+ * @param {number} y Position
+ * @constructor
+ */
+var Item = function() {
+    // cannot produce objects of class Item
+    if (this.constructor === Item) {
+        throw new Error('Can\'t instantiate abstract class!');
+    }
+    // position should be initialized when creating an extended class
+    this.x;
+    this.y;
+    this.visible = false;
+
+    // sprite should be Initialized when creating an extended class
+    this.sprite;
+};
+
+/**
+ * Draw Item on screen
+ */
+Item.prototype.render = function() {
+    if (this.isVisible())
+        ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+/**
+ * Make Item visible
+ */
+Item.prototype.show = function() {
+    this.visible = true;
+};
+
+/**
+ * Hide Item
+ */
+Item.prototype.hide = function() {
+    this.visible = false;
+};
+
+/**
+ * Check if Item is visible
+ * @returns {boolean}
+ */
+Item.prototype.isVisible = function() {
+    return this.visible;
+};
+
+
+/**
+ * Extends Item
+ * Gem that player collects
+ * @param {number} x
+ * @param {number} y
+ * @constructor
+ */
+var Gem = function() {
+    Item.call(this);
+    this.intent = 'shown'; // Gem is intended to be shown on game board
+    this.sprite = 'images/Gem Blue.png';
+};
+Gem.prototype = Object.create(Item.prototype);
+Gem.prototype.constructor = Gem;
+
+/**
+ * Initialize gem randomly on enemy territory
+ */
+Gem.prototype.initialize = function() {
+    this.show();
+    // Randomly place the gem in 1 of 5 columns
+    this.x = GRID.column(
+        Math.floor(Math.random() * (4 - 0 + 1)) + 0
+    );
+    // Randomly place the gem on 1 of the 3 rows
+    this.y = GRID.row(
+        Math.floor(Math.random() * (3 - 1 + 1)) + 1
+    );
+};
+
+/**
+ * Terminate gem, by hiding it
+ */
+Gem.prototype.terminate = function() {
+    this.hide();
+    this.intent = 'shown';
+};
+
+/**
+ * Show Gem on game board if intent is to be shown
+ */
+Gem.prototype.update = function() {
+    // if gem is to be shown
+    if (this.intent === 'shown') {
+        // then fulfill show
+        this.intent = 'waiting';
+        // ES6 syntax
+        // setTimeout(() => { this.initialize(); },
+        // (Math.floor(Math.random() * (10 - 5 + 1)) + 5) * 1000);
+        var initGem = this; // using this temp var for setTimeout to work
+        setTimeout(function() {
+            initGem.initialize();
+            // Show gem between 5 - 10 seconds after intent
+        }, (Math.floor(Math.random() * (10 - 5 + 1)) + 5) * 1000);
+    }
+};
+
+/**
  * Player
  * @constructor
  */
-var Player = function () {
+var Player = function() {
     this.initialize();
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
@@ -111,9 +219,17 @@ var Player = function () {
 };
 
 /**
+ * Proclaim player as winner
+ */
+Player.prototype.win = function() {
+    alert('You won the game, congratulations!');
+    this.initialize();
+};
+
+/**
  * Initialize player's position & intent
  */
-Player.prototype.initialize = function () {
+Player.prototype.initialize = function() {
     this.x = GRID.column(2);
     this.y = GRID.row(5);
     this.intent = 'stay';
@@ -123,7 +239,7 @@ Player.prototype.initialize = function () {
  * Update player's position based on his intent,
  * required method for game
  */
-Player.prototype.update = function () {
+Player.prototype.update = function() {
     switch (this.intent) {
         case 'left':
             // move player left
@@ -133,7 +249,7 @@ Player.prototype.update = function () {
             // If player is going to step into the water
             // player wins & is reinitialized
             if (GRID.row(1) === this.y) {
-                this.initialize();
+                this.win();
             } else {
                 // else move player up
                 this.y -= GRID.ROW;
@@ -155,7 +271,7 @@ Player.prototype.update = function () {
 /**
  * Draw the player on screen
  */
-Player.prototype.render = function () {
+Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
@@ -163,9 +279,30 @@ Player.prototype.render = function () {
  * Handle input & restrict disallowed movements
  * @param {string} key
  */
-Player.prototype.handleInput = function (key) {
+Player.prototype.handleInput = function(key) {
     if (this._isAllowed(key))
         this.intent = key;
+};
+
+/**
+ * Return true if player is on top of a particular entity
+ * @param {Object} entity
+ * @return {boolean}
+ */
+Player.prototype.isOnTopOf = function (entity) {
+    return this.x === entity.x && this.y === entity.y;
+};
+
+/**
+ * Check Enemy collision based on 2 criteria
+ * 1. Enemy and player are in the same row
+ * 2. Enemy sprite collides with player on the torso
+ * @param {Enemy} enemy
+ * @return {boolean}
+ */
+Player.prototype.isCollidingWithEnemy = function (enemy) {
+    // Starts hitting player torso           is on the same row    hitting player torso with the back
+    return (enemy.x + 101 >= this.x + 38) && (this.y === enemy.y) && (enemy.x <= this.x + 58);
 };
 
 /**
@@ -174,7 +311,7 @@ Player.prototype.handleInput = function (key) {
  * @return {boolean}
  * @private
  */
-Player.prototype._isAllowed = function (intent) {
+Player.prototype._isAllowed = function(intent) {
     switch (intent) {
         case 'left':
             // if player is in the left edge
@@ -204,10 +341,11 @@ var allEnemies = [
     new Enemy(),
 ];
 var player = new Player();
+var gem = new Gem();
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
-document.addEventListener('keyup', function (e) {
+document.addEventListener('keyup', function(e) {
     var allowedKeys = {
         37: 'left',
         38: 'up',

@@ -14,7 +14,7 @@
  * a little simpler to work with.
  */
 
-var Engine = (function(global) {
+var Engine = (function (global) {
     /* Predefine the variables we'll be using within this scope,
      * create the canvas element, grab the 2D context for that canvas
      * set the canvas elements height/width and add it to the DOM.
@@ -91,27 +91,27 @@ var Engine = (function(global) {
      * render methods.
      */
     function updateEntities(dt) {
-        allEnemies.forEach(function(enemy) {
+        allEnemies.forEach(function (enemy) {
             enemy.update(dt);
         });
         player.update();
+        gem.update();
     }
 
     /**
      * Check collisions
      */
     function checkCollisions() {
-        /**
-         * Check Enemy collision based on 2 criteria
-         * 1. Enemy and player are in the same row
-         * 2. Enemy sprite collides with player on the torso
-         */
-        allEnemies.forEach(function (enemy) {
-            // Starts hitting enemy torso           is on the same row    hitting enemy torso with the back
-            if ((enemy.x + 101 >= player.x + 33) && (player.y === enemy.y) && (enemy.x <= player.x + 60)) {
+        // Check enemy collision
+        allEnemies.forEach(function(enemy) {
+            if (player.isCollidingWithEnemy(enemy)) {
                 player.initialize();
             }
         });
+        // Check gem consumption
+        if (player.isOnTopOf(gem) && gem.isVisible()) {
+            gem.terminate();
+        }
     }
 
     /* This function initially draws the "game level", it will then call
@@ -130,7 +130,7 @@ var Engine = (function(global) {
                 'images/stone-block.png',   // Row 2 of 3 of stone
                 'images/stone-block.png',   // Row 3 of 3 of stone
                 'images/grass-block.png',   // Row 1 of 2 of grass
-                'images/grass-block.png'    // Row 2 of 2 of grass
+                'images/grass-block.png',    // Row 2 of 2 of grass
             ],
             numRows = 6,
             numCols = 5,
@@ -161,10 +161,11 @@ var Engine = (function(global) {
      * on your enemy and player entities within app.js
      */
     function renderEntities() {
+        gem.render();
         /* Loop through all of the objects within the allEnemies array and call
          * the render function you have defined.
          */
-        allEnemies.forEach(function(enemy) {
+        allEnemies.forEach(function (enemy) {
             enemy.render();
         });
 
@@ -188,7 +189,8 @@ var Engine = (function(global) {
         'images/water-block.png',
         'images/grass-block.png',
         'images/enemy-bug.png',
-        'images/char-boy.png'
+        'images/char-boy.png',
+        'images/Gem Blue.png',
     ]);
     Resources.onReady(init);
 

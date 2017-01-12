@@ -113,6 +113,9 @@ var Engine = (function (global) {
                 player.initialize();
             }
         });
+        if (player.x === gem.x && player.y === gem.y && gem.isVisible()) {
+            gem.terminate();
+        }
     }
 
     /* This function initially draws the "game level", it will then call

@@ -284,8 +284,25 @@ Player.prototype.handleInput = function(key) {
         this.intent = key;
 };
 
-Player.prototype.consume = function() {
-    //TODO
+/**
+ * Return true if player is on top of a particular entity
+ * @param {Object} entity
+ * @return {boolean}
+ */
+Player.prototype.isOnTopOf = function (entity) {
+    return this.x === entity.x && this.y === entity.y;
+};
+
+/**
+ * Check Enemy collision based on 2 criteria
+ * 1. Enemy and player are in the same row
+ * 2. Enemy sprite collides with player on the torso
+ * @param {Enemy} enemy
+ * @return {boolean}
+ */
+Player.prototype.isCollidingWithEnemy = function (enemy) {
+    // Starts hitting player torso           is on the same row    hitting player torso with the back
+    return (enemy.x + 101 >= this.x + 38) && (this.y === enemy.y) && (enemy.x <= this.x + 58);
 };
 
 /**

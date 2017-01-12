@@ -39,10 +39,32 @@ GRID.row = function (row) {
 };
 
 /**
- * Enemies our players must avoid
+ * ScoreBoard is an object that makes it easy to
+ * manipulate the score of the game
+ * @type {{view: Element}}
+ */
+var scoreBoard = {
+    _view: document.getElementById('score'),
+};
+
+/**
+ * Game score
+ * @type {number}
+ */
+scoreBoard.score = 0;
+
+/**
+ * Render score to the HTML view
+ */
+scoreBoard.render = function() {
+    this._view.innerHTML = this.score;
+};
+
+/**
+ * Enemies player must avoid
  * @constructor
  */
-var Enemy = function () {
+var Enemy = function() {
     // initialize enemy
     this._initialize();
 

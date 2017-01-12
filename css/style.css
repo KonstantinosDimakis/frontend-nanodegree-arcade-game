@@ -15,3 +15,9 @@ body {
     flex-wrap: wrap;
 }
 
+.scoreboard {
+    font-family: monospace;
+    color: #039be5;
+    font-size: 5rem;
+    text-align: center;
+}

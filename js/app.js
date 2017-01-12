@@ -39,10 +39,32 @@ GRID.row = function (row) {
 };
 
 /**
- * Enemies our players must avoid
+ * ScoreBoard is an object that makes it easy to
+ * manipulate the score of the game
+ * @type {{view: Element}}
+ */
+var scoreBoard = {
+    _view: document.getElementById('score'),
+};
+
+/**
+ * Game score
+ * @type {number}
+ */
+scoreBoard.score = 0;
+
+/**
+ * Render score to the HTML view
+ */
+scoreBoard.render = function() {
+    this._view.innerHTML = this.score;
+};
+
+/**
+ * Enemies player must avoid
  * @constructor
  */
-var Enemy = function () {
+var Enemy = function() {
     // initialize enemy
     this._initialize();
 
@@ -161,6 +183,7 @@ var Gem = function() {
     Item.call(this);
     this.intent = 'shown'; // Gem is intended to be shown on game board
     this.sprite = 'images/Gem Blue.png';
+    this.value = 50; // value to be used for score
 };
 Gem.prototype = Object.create(Item.prototype);
 Gem.prototype.constructor = Gem;
@@ -222,7 +245,8 @@ var Player = function() {
  * Proclaim player as winner
  */
 Player.prototype.win = function() {
-    alert('You won the game, congratulations!');
+    alert('You won the game, congratulations!\nYour score was: ' + scoreBoard.score);
+    scoreBoard.score = 0; // reset score
     this.initialize();
 };
 

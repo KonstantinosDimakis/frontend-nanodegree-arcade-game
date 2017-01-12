@@ -106,10 +106,12 @@ var Engine = (function (global) {
         allEnemies.forEach(function(enemy) {
             if (player.isCollidingWithEnemy(enemy)) {
                 player.initialize();
+                scoreBoard.score = 0; // reset score
             }
         });
-        // Check gem consumption
+        // Check gem consumption by player
         if (player.isOnTopOf(gem) && gem.isVisible()) {
+            scoreBoard.score += gem.value; // update score by gem value
             gem.terminate();
         }
     }
@@ -161,6 +163,8 @@ var Engine = (function (global) {
      * on your enemy and player entities within app.js
      */
     function renderEntities() {
+        // Diplay the score
+        scoreBoard.render();
         gem.render();
         /* Loop through all of the objects within the allEnemies array and call
          * the render function you have defined.

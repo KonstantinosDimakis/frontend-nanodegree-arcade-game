@@ -64,7 +64,7 @@ Enemy.SPEED = {
  * Update enemy position
  * @param {number} dt
  */
-Enemy.prototype.update = function (dt) {
+Enemy.prototype.update = function(dt) {
     // if enemy has completely crossed the canvas
     // initialize him again
     if (this.x >= GRID.column(5)) {
@@ -79,7 +79,7 @@ Enemy.prototype.update = function (dt) {
 /**
  * Draw the enemy on the screen, required method for game
  */
-Enemy.prototype.render = function () {
+Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
@@ -88,7 +88,7 @@ Enemy.prototype.render = function () {
  * and give him a speed.
  * @private
  */
-Enemy.prototype._initialize = function () {
+Enemy.prototype._initialize = function() {
     // Initialize enemy off screen
     this.x = GRID.column(-1);
     // Randomly place enemy on 1 of the 3 rows
@@ -105,7 +105,7 @@ Enemy.prototype._initialize = function () {
  * @param {number} y Position
  * @constructor
  */
-var Item = function () {
+var Item = function() {
     // cannot produce objects of class Item
     if (this.constructor === Item) {
         throw new Error('Can\'t instantiate abstract class!');
@@ -122,7 +122,7 @@ var Item = function () {
 /**
  * Draw Item on screen
  */
-Item.prototype.render = function () {
+Item.prototype.render = function() {
     if (this.isVisible())
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
@@ -159,6 +159,7 @@ Item.prototype.isVisible = function() {
  */
 var Gem = function() {
     Item.call(this);
+    this.intent = 'shown'; // Gem is intended to be shown on game board
     this.sprite = 'images/Gem Blue.png';
 };
 Gem.prototype = Object.create(Item.prototype);
@@ -184,6 +185,26 @@ Gem.prototype.initialize = function() {
  */
 Gem.prototype.terminate = function() {
     this.hide();
+    this.intent = 'shown';
+};
+
+/**
+ * Show Gem on game board if intent is to be shown
+ */
+Gem.prototype.update = function() {
+    // if gem is to be shown
+    if (this.intent === 'shown') {
+        // then fulfill show
+        this.intent = 'waiting';
+        // ES6 syntax
+        // setTimeout(() => { this.initialize(); },
+        // (Math.floor(Math.random() * (10 - 5 + 1)) + 5) * 1000);
+        var initGem = this; // using this temp var for setTimeout to work
+        setTimeout(function() {
+            initGem.initialize();
+            // Show gem between 5 - 10 seconds after intent
+        }, (Math.floor(Math.random() * (10 - 5 + 1)) + 5) * 1000);
+    }
 };
 
 /**
@@ -208,7 +229,7 @@ Player.prototype.win = function() {
 /**
  * Initialize player's position & intent
  */
-Player.prototype.initialize = function () {
+Player.prototype.initialize = function() {
     this.x = GRID.column(2);
     this.y = GRID.row(5);
     this.intent = 'stay';
@@ -218,7 +239,7 @@ Player.prototype.initialize = function () {
  * Update player's position based on his intent,
  * required method for game
  */
-Player.prototype.update = function () {
+Player.prototype.update = function() {
     switch (this.intent) {
         case 'left':
             // move player left
@@ -250,7 +271,7 @@ Player.prototype.update = function () {
 /**
  * Draw the player on screen
  */
-Player.prototype.render = function () {
+Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
@@ -258,12 +279,12 @@ Player.prototype.render = function () {
  * Handle input & restrict disallowed movements
  * @param {string} key
  */
-Player.prototype.handleInput = function (key) {
+Player.prototype.handleInput = function(key) {
     if (this._isAllowed(key))
         this.intent = key;
 };
 
-Player.prototype.consume = function () {
+Player.prototype.consume = function() {
     //TODO
 };
 
@@ -273,7 +294,7 @@ Player.prototype.consume = function () {
  * @return {boolean}
  * @private
  */
-Player.prototype._isAllowed = function (intent) {
+Player.prototype._isAllowed = function(intent) {
     switch (intent) {
         case 'left':
             // if player is in the left edge
@@ -307,7 +328,7 @@ var gem = new Gem();
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
-document.addEventListener('keyup', function (e) {
+document.addEventListener('keyup', function(e) {
     var allowedKeys = {
         37: 'left',
         38: 'up',

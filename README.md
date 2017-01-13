@@ -1,6 +1,19 @@
-frontend-nanodegree-arcade-game
-===============================
+#frontend-nanodegree-arcade-game
 
-Students should use this [rubric](https://review.udacity.com/#!/projects/2696458597/rubric) for self-checking their submission. Make sure the functions you write are **object-oriented** - either class functions (like Player and Enemy) or class prototype functions such as Enemy.prototype.checkCollisions, and that the keyword 'this' is used appropriately within your class and class prototype functions to refer to the object the function is called upon. Also be sure that the **readme.md** file is updated with your instructions on both how to 1. Run and 2. Play your arcade game.
+This frogger clone, is a project that's part of [Udacity](https://www.udacity.com/)'s [Front-End Web Developer Nanodegree](https://www.udacity.com/course/front-end-web-developer-nanodegree--nd001).
 
-For detailed instructions on how to get started, check out this [guide](https://docs.google.com/document/d/1v01aScPjSWCCWQLIpFqvg3-vXLH2e8_SZQKC8jNO0Dc/pub?embedded=true).
+##How to run the game
+* Play the game [online](https://konstantinosdimakis.github.io/frontend-nanodegree-arcade-game/)
+or
+* Download the master branch from this repository and simply open `index.html` in your browser.
+
+##How to play
+* Use ← ↑ → ↓ arrow keys to  move the player
+* Avoid enemies
+* Collect plenty gems to achieve a high score!
+* Win by jumping on the water
+
+The trick of the game is that you select when to win! But the longer you play the more points you achieve! Are you ready to test your greed?
+
+##LICENSE
+MIT © [Konstantinos Dimakis](https://github.com/KonstantinosDimakis)

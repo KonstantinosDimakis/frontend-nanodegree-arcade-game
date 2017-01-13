@@ -1,6 +1,6 @@
 #frontend-nanodegree-arcade-game
 
-This frogger clone, is a project that's part of [Udacity](https://www.udacity.com/)'s [Front-End Web Developer Nanodegree](https://www.udacity.com/course/front-end-web-developer-nanodegree--nd001).
+This frogger clone, is a project that's part of [Udacity](https://www.udacity.com/)'s [Front-End Web Developer Nanodegree](https://www.udacity.com/course/front-end-web-developer-nanodegree--nd001) and its purpose was to familiarize me with Object Oriented Javascript and HTML Canvas. 
 
 ##How to run the game
 * Play the game [online](https://konstantinosdimakis.github.io/frontend-nanodegree-arcade-game/)

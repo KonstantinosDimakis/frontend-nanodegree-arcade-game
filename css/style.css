@@ -6,7 +6,7 @@ html {
     box-sizing: inherit;
 }
 
-body {
+main {
     text-align: center;
 }
 
@@ -20,4 +20,9 @@ body {
     color: #039be5;
     font-size: 5rem;
     text-align: center;
+}
+
+canvas {
+    display: block;
+    margin: 0 auto;
 }

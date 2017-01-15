@@ -165,12 +165,13 @@ Item.prototype.hide = function() {
 
 /**
  * Check if Item is visible
- * @returns {boolean}
+ * @return {boolean}
  */
 Item.prototype.isVisible = function() {
     return this.visible;
 };
 
+// TODO refactor code where necesary and add comments
 
 /**
  * Extends Item

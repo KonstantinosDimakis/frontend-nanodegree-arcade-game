@@ -3,11 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Effective JavaScript: Frogger</title>
+    <title>Frogger Game Clone</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css"/>
+    <link rel="import" href="bower_components/paper-toolbar/paper-toolbar.html">
+    <link rel="import" href="bower_components/paper-icon-button/paper-icon-button.html">
     <link rel="stylesheet" href="css/style.css">
+    <style is="custom-style">
+        paper-toolbar.orange {
+            --paper-toolbar-background: var(--paper-indigo-500);
+            --paper-toolbar-color: white;
+        }
+    </style>
 </head>
 <body>
+    <header>
+        <paper-toolbar class="orange">
+            <a href="https://github.com/KonstantinosDimakis/frontend-nanodegree-arcade-game">
+                <paper-icon-button src="images/github.svg" alt="GitHub Repository"></paper-icon-button>
+            </a>
+            <span class="title">Frogger Game Clone</span>
+        </paper-toolbar>
+    </header>
     <section class="scoreboard">
         Score: <span id="score"></span>
     </section>
